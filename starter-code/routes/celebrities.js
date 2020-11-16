@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Celebrity = require("../models/Celebrity");
 
+//get all celebs from the db
 router.get("/celebrities", (req, res, next) => {
   // console.log(celebrities);
   Celebrity.find({})
@@ -12,15 +13,16 @@ router.get("/celebrities", (req, res, next) => {
       });
     })
     .catch((err) => {
-      // If there's an error, call the route's next function and return the error.
       console.log("error from get celebs", err);
     });
 });
 
+//add new celeb view with form
 router.get("/celebrities/new", (req, res, next) => {
   res.render("celebrities/new");
 });
 
+//get celeb details from db
 router.get("/celebrities/:id", (req, res, next) => {
   Celebrity.findById(req.params.id)
     .then((celebDetails) => {
@@ -34,6 +36,7 @@ router.get("/celebrities/:id", (req, res, next) => {
     });
 });
 
+//add new celeb
 router.post("/celebrities", (req, res) => {
   const { name, occupation, catchPhrase } = req.body;
   console.log("name, occupation, catchPhrase", name, occupation, catchPhrase);
@@ -45,6 +48,16 @@ router.post("/celebrities", (req, res) => {
     })
     .catch((err) => {
       console.log("error while adding new celeb", err);
+      res.redirect("celebrities/new");
+    });
+});
+
+//delete celeb
+router.post("/celebrities/:id/delete", (req, res) => {
+  Celebrity.findByIdAndRemove(req.params.id)
+    .then(res.redirect("/celebrities"))
+    .catch((err) => {
+      console.log("error while deleting a celeb", err);
       res.redirect("celebrities/new");
     });
 });
