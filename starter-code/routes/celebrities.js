@@ -2,10 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Celebrity = require("../models/Celebrity");
 
-// Call the Celebrity model's find method to retrieve all the celebrities.
-// If there's an error, call the route's next function and return the error.
-// If there isn't an error, render the celebrities/index view.
-// Pass the array of celebrities into the view as a variable.
 router.get("/celebrities", (req, res, next) => {
   // console.log(celebrities);
   Celebrity.find({})
@@ -16,7 +12,21 @@ router.get("/celebrities", (req, res, next) => {
       });
     })
     .catch((err) => {
+      // If there's an error, call the route's next function and return the error.
       console.log("error from get celebs", err);
+    });
+});
+
+router.get("/celebrities/:id", (req, res, next) => {
+  Celebrity.findById(req.params.id)
+    .then((celebDetails) => {
+      console.log("celebdetails", celebDetails);
+      res.render("celebrities/details", {
+        celebDetails: celebDetails,
+      });
+    })
+    .catch((err) => {
+      console.log("error from find by id", err);
     });
 });
 
