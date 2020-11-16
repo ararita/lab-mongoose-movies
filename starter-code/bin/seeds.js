@@ -14,8 +14,7 @@ const celebrities = [
   {
     name: "George Constanza",
     occupation: "Hand model",
-    catchPhrase:
-      "I'm disturbed, I'm depressed, I'm inadequate – I've got it all!",
+    catchPhrase: "I lie every second of the day. My whole life is a sham.",
   },
   {
     name: "Elaine Benes",

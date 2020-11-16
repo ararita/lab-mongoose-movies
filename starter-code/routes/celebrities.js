@@ -7,7 +7,7 @@ router.get("/celebrities", (req, res, next) => {
   // console.log(celebrities);
   Celebrity.find({})
     .then((celebsFromDB) => {
-      console.log("celebsData", celebsFromDB);
+      // console.log("celebsData", celebsFromDB);
       res.render("celebrities/index", {
         celebsList: celebsFromDB,
       });
@@ -26,7 +26,7 @@ router.get("/celebrities/new", (req, res, next) => {
 router.get("/celebrities/:id", (req, res, next) => {
   Celebrity.findById(req.params.id)
     .then((celebDetails) => {
-      console.log("celebdetails", celebDetails);
+      // console.log("celebdetails", celebDetails);
       res.render("celebrities/details", {
         celebDetails: celebDetails,
       });
@@ -39,7 +39,6 @@ router.get("/celebrities/:id", (req, res, next) => {
 //add new celeb
 router.post("/celebrities", (req, res) => {
   const { name, occupation, catchPhrase } = req.body;
-  console.log("name, occupation, catchPhrase", name, occupation, catchPhrase);
 
   Celebrity.create({ name, occupation, catchPhrase })
     .then((celeb) => {
@@ -50,6 +49,28 @@ router.post("/celebrities", (req, res) => {
       console.log("error while adding new celeb", err);
       res.redirect("celebrities/new");
     });
+});
+
+router.get("/celebrities/:id/edit", (req, res) => {
+  Celebrity.findById(req.params.id)
+    .then((celeb) => {
+      console.log("celeb", celeb);
+      res.render("celebrities/edit", { celeb: celeb });
+    })
+    .catch((err) => {
+      console.log("error while editing a celeb", err);
+    });
+});
+
+router.post("/celebrities/:id/edit", (req, res) => {
+  const { name, occupation, catchPhrase } = req.body;
+  Celebrity.findByIdAndUpdate(req.params.id, {
+    name: name,
+    occupation: occupation,
+    catchPhrase: catchPhrase,
+  }).then(() => {
+    res.redirect("/celebrities");
+  });
 });
 
 //delete celeb
