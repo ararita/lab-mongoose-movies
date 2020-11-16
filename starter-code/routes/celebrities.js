@@ -17,6 +17,10 @@ router.get("/celebrities", (req, res, next) => {
     });
 });
 
+router.get("/celebrities/new", (req, res, next) => {
+  res.render("celebrities/new");
+});
+
 router.get("/celebrities/:id", (req, res, next) => {
   Celebrity.findById(req.params.id)
     .then((celebDetails) => {
@@ -27,6 +31,21 @@ router.get("/celebrities/:id", (req, res, next) => {
     })
     .catch((err) => {
       console.log("error from find by id", err);
+    });
+});
+
+router.post("/celebrities", (req, res) => {
+  const { name, occupation, catchPhrase } = req.body;
+  console.log("name, occupation, catchPhrase", name, occupation, catchPhrase);
+
+  Celebrity.create({ name, occupation, catchPhrase })
+    .then((celeb) => {
+      console.log(`${celeb.name} was added to the db`);
+      res.redirect(`/celebrities/${celeb._id}`);
+    })
+    .catch((err) => {
+      console.log("error while adding new celeb", err);
+      res.redirect("celebrities/new");
     });
 });
 
