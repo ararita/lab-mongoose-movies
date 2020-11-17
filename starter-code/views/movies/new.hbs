@@ -4,6 +4,23 @@
   <input type="text" name="title" placeholder="Title">
   <input type="text" name="genre" placeholder="Genre">
   <input type="text" name="plot" placeholder="Plot">
-  {{!-- <input type="text" name="cast" placeholder="Cast"> --}}
   <button type="submit">Add movie</button>
 </form>
+
+
+{{!-- <h2>Cast: </h2> --}}
+<label for="celeb-select">Choose actor:</label>
+
+<select name="cast" id="celeb-select" multiple>
+  <option value="">--Please choose an actor--</option>
+  {{#each celebsList}}
+  <option value={{_id}}>{{name}}</option>
+  {{/each}}
+
+</select>
+
+{{!-- You'll need to:
+
+In the route that renders the view with the form to add a movie get all the celebrities from the database and pass them to the view
+In the view render a select that shows the list of the celebrities - watch out: it has to be possible to select multiple celebrities
+In the post route add the cast to the movie model at creating a new movie --}}

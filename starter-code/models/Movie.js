@@ -5,7 +5,12 @@ const movieSchema = new Schema({
   title: String,
   genre: String,
   plot: String,
-  // cast: [{}],
+  cast: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Celebrity",
+    },
+  ],
 });
 
 const Movie = mongoose.model("Movie", movieSchema);

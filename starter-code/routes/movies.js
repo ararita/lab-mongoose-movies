@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Movie = require("../models/Movie");
+const Celebrity = require("../models/Celebrity");
 
 //get all movies from the db
 router.get("/movies", (req, res, next) => {
@@ -17,10 +18,21 @@ router.get("/movies", (req, res, next) => {
     });
 });
 
+//add new movie form view
 router.get("/movies/new", (req, res) => {
-  res.render("movies/new");
+  Celebrity.find()
+    .then((celebs) => {
+      console.log("celebs", celebs);
+      res.render("movies/new", {
+        celebsList: celebs,
+      });
+    })
+    .catch((err) => {
+      console.log("error from get new movies", err);
+    });
 });
 
+//see movie details
 router.get("/movies/:id", (req, res) => {
   Movie.findById(req.params.id)
     .then((movieFromDB) => {
@@ -33,6 +45,7 @@ router.get("/movies/:id", (req, res) => {
     });
 });
 
+//add new movie
 router.post("/movies", (req, res) => {
   const { title, genre, plot } = req.body;
 
