@@ -68,8 +68,8 @@ router.post("/celebrities/:id/edit", (req, res) => {
     name: name,
     occupation: occupation,
     catchPhrase: catchPhrase,
-  }).then(() => {
-    res.redirect("/celebrities");
+  }).then((celeb) => {
+    res.redirect(`/celebrities/${celeb._id}`);
   });
 });
 
