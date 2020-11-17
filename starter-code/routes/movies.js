@@ -6,9 +6,10 @@ const Celebrity = require("../models/Celebrity");
 //get all movies from the db
 router.get("/movies", (req, res, next) => {
   // console.log(movies);
-  Movie.find({})
+  Movie.find()
+    .populate("cast")
     .then((moviesFromDB) => {
-      // console.log("moviesFromDB", moviesFromDB);
+      console.log("moviesFromDB", moviesFromDB);
       res.render("movies/index", {
         moviesList: moviesFromDB,
       });
@@ -22,7 +23,7 @@ router.get("/movies", (req, res, next) => {
 router.get("/movies/new", (req, res) => {
   Celebrity.find()
     .then((celebs) => {
-      console.log("celebs", celebs);
+      // console.log("celebs", celebs);
       res.render("movies/new", {
         celebsList: celebs,
       });
@@ -47,9 +48,9 @@ router.get("/movies/:id", (req, res) => {
 
 //add new movie
 router.post("/movies", (req, res) => {
-  const { title, genre, plot } = req.body;
+  const { title, genre, plot, cast } = req.body;
 
-  Movie.create({ title, genre, plot })
+  Movie.create({ title, genre, plot, cast })
     .then((movie) => {
       console.log(`${movie.title} was added to the db`);
 
