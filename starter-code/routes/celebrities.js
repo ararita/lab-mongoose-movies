@@ -51,6 +51,7 @@ router.post("/celebrities", (req, res) => {
     });
 });
 
+//edit celeb view
 router.get("/celebrities/:id/edit", (req, res) => {
   Celebrity.findById(req.params.id)
     .then((celeb) => {
@@ -62,6 +63,7 @@ router.get("/celebrities/:id/edit", (req, res) => {
     });
 });
 
+//edit celeb
 router.post("/celebrities/:id/edit", (req, res) => {
   const { name, occupation, catchPhrase } = req.body;
   Celebrity.findByIdAndUpdate(req.params.id, {
