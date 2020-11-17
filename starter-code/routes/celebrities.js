@@ -19,7 +19,9 @@ router.get("/celebrities", (req, res, next) => {
 
 //add new celeb view with form
 router.get("/celebrities/new", (req, res, next) => {
-  res.render("celebrities/new");
+  res.render("celebrities/new").catch((err) => {
+    console.log("error from get new celeb", err);
+  });
 });
 
 //get celeb details from db
@@ -70,9 +72,13 @@ router.post("/celebrities/:id/edit", (req, res) => {
     name: name,
     occupation: occupation,
     catchPhrase: catchPhrase,
-  }).then((celeb) => {
-    res.redirect(`/celebrities/${celeb._id}`);
-  });
+  })
+    .then((celeb) => {
+      res.redirect(`/celebrities/${celeb._id}`);
+    })
+    .catch((err) => {
+      console.log("error while editing a celeb in the post request", err);
+    });
 });
 
 //delete celeb

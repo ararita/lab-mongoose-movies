@@ -33,9 +33,10 @@ router.get("/movies/new", (req, res) => {
     });
 });
 
-//see movie details
+//get movie details from db
 router.get("/movies/:id", (req, res) => {
   Movie.findById(req.params.id)
+    .populate("cast")
     .then((movieFromDB) => {
       res.render("movies/details", {
         movieDetails: movieFromDB,
@@ -58,6 +59,50 @@ router.post("/movies", (req, res) => {
     })
     .catch((err) => {
       console.log("error from post movies", err);
+    });
+});
+
+//edit movie form view
+router.get("/movies/:id/edit", (req, res) => {
+  Movie.findById(req.params.id)
+    .populate("cast")
+    .then((movie) => {
+      // console.log({ movie });
+      res.render("movies/edit", {
+        movie: movie,
+      });
+    })
+    .catch((err) => {
+      console.log("error while editing a movie", err);
+    });
+});
+
+//edit movie
+router.post("/movies/:id/edit", (req, res) => {
+  const { title, genre, plot, cast } = req.body;
+
+  Movie.findByIdAndUpdate(req.params.id, {
+    title: title,
+    genre: genre,
+    plot: plot,
+    cast: cast,
+  })
+    .populate("cast")
+    .then((movie) => {
+      res.redirect(`/movies/${movie._id}`);
+    })
+    .catch((err) => {
+      console.log("error while editing a movie in the post request", err);
+    });
+});
+
+//delete movie
+router.post("/movies/:id/delete", (req, res) => {
+  Movie.findByIdAndRemove(req.params.id)
+    .then(res.redirect("/movies"))
+    .catch((err) => {
+      console.log("error while deleting a movie", err);
+      res.redirect("movies/new");
     });
 });
 
