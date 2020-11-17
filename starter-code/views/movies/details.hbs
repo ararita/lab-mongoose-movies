@@ -1,9 +1,7 @@
 <a href="/movies">Home</a>
 
-
-<h3>Details view</h3>
-
 {{#with movieDetails}}
+
 <h3>{{title}}</h3>
 <p>Genre: {{genre}}</p>
 <p>Plot: {{plot}}</p>
@@ -14,5 +12,7 @@
   <li>{{name}}</li>
   {{/each}}
 </ul>
+
 <a href="/movies/{{_id}}/edit">Edit movie</a>
+
 {{/with}}

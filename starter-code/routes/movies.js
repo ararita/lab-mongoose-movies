@@ -5,11 +5,9 @@ const Celebrity = require("../models/Celebrity");
 
 //get all movies from the db
 router.get("/movies", (req, res, next) => {
-  // console.log(movies);
   Movie.find()
     .populate("cast")
     .then((moviesFromDB) => {
-      console.log("moviesFromDB", moviesFromDB);
       res.render("movies/index", {
         moviesList: moviesFromDB,
       });
@@ -23,7 +21,6 @@ router.get("/movies", (req, res, next) => {
 router.get("/movies/new", (req, res) => {
   Celebrity.find()
     .then((celebs) => {
-      // console.log("celebs", celebs);
       res.render("movies/new", {
         celebsList: celebs,
       });
@@ -54,7 +51,6 @@ router.post("/movies", (req, res) => {
   Movie.create({ title, genre, plot, cast })
     .then((movie) => {
       console.log(`${movie.title} was added to the db`);
-
       res.redirect(`/movies/${movie._id}`);
     })
     .catch((err) => {
@@ -67,7 +63,6 @@ router.get("/movies/:id/edit", (req, res) => {
   Movie.findById(req.params.id)
     .populate("cast")
     .then((movie) => {
-      // console.log({ movie });
       res.render("movies/edit", {
         movie: movie,
       });
@@ -87,7 +82,7 @@ router.post("/movies/:id/edit", (req, res) => {
     plot: plot,
     cast: cast,
   })
-    .populate("cast")
+    // .populate("cast")
     .then((movie) => {
       res.redirect(`/movies/${movie._id}`);
     })
@@ -97,7 +92,7 @@ router.post("/movies/:id/edit", (req, res) => {
 });
 
 //delete movie
-router.post("/movies/:id/delete", (req, res) => {
+router.post("/movies/:id", (req, res) => {
   Movie.findByIdAndRemove(req.params.id)
     .then(res.redirect("/movies"))
     .catch((err) => {

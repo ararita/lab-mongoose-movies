@@ -1,16 +1,17 @@
-<h2>Edit movies:</h2>
+<a href="/movies">Home</a>
+
+<h2>Edit movie:</h2>
 
 {{#with movie}}
 
 <form action="/movies/{{_id}}/edit" method="POST">
+
   <input type="text" name="title" placeholder="title" value="{{title}}">
   <input type="text" name="genre" placeholder="genre" value="{{genre}}">
   <input type="text" name="plot" placeholder="plot" value="{{plot}}">
 
   <label for="celeb-select">Choose actor:</label>
-
   <select name="cast" id="celeb-select" multiple>
-    {{!-- <option value="">--Please choose an actor--</option> --}}
     {{#each cast}}
     <option value={{_id}}>{{name}}</option>
     {{/each}}
