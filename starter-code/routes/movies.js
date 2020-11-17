@@ -21,6 +21,18 @@ router.get("/movies/new", (req, res) => {
   res.render("movies/new");
 });
 
+router.get("/movies/:id", (req, res) => {
+  Movie.findById(req.params.id)
+    .then((movieFromDB) => {
+      res.render("movies/details", {
+        movieDetails: movieFromDB,
+      });
+    })
+    .catch((err) => {
+      console.log("error from get movies details", err);
+    });
+});
+
 router.post("/movies", (req, res) => {
   const { title, genre, plot } = req.body;
 
@@ -28,7 +40,7 @@ router.post("/movies", (req, res) => {
     .then((movie) => {
       console.log(`${movie.title} was added to the db`);
 
-      res.redirect(`movies/${movie._id}`);
+      res.redirect(`/movies/${movie._id}`);
     })
     .catch((err) => {
       console.log("error from post movies", err);
